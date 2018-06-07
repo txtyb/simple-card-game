@@ -1,4 +1,3 @@
 a=['a','b','c','d','e']
-
-a.remove(2)
-print(a)
+num=a.index('o')
+print(num)
