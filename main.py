@@ -59,20 +59,16 @@ def scount(num):
     global score
     score+=num*5
 
-def initdesk():
-    s = curses.initscr()
+def draw_game(w):
+    # 初始化
     global hei, wei
-    hei, wei = s.getmaxyx()
-    curses.cbreak()
-    curses.noecho()
+    hei, wei = w.getmaxyx()
     curses.curs_set(0)
     # 初始化颜色对
     curses.start_color()                    
     curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
     curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
     curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_WHITE)
-    global w
-    w = curses.newwin(0,0)
     # 画出desk
     for i in range(1, wei-1):
         w.addstr(0, i, '-')
@@ -85,8 +81,7 @@ def initdesk():
         w.addstr(i, 0, '|')
         w.addstr(i, wei-1, '|')
     w.refresh()
-    
-def draw_game(w):
+    # 开始
     while True:
         # 清除前一次绘制的card
         for i in range(1, int(wei)-1):
@@ -96,7 +91,7 @@ def draw_game(w):
         # 绘制score
         w.addstr(3, 2, 'Score:'+str(score))
         # 绘制score bar
-        status_bar_str = "Press 'q' to exit | Score:%s | Card Game "%str(score)
+        status_bar_str = "Press 'q' to exit | Score: %s | Card Game "%str(score)
         w.attron(curses.color_pair(3))
         w.addstr(hei-1, 1, status_bar_str)
         w.attroff(curses.color_pair(3))
@@ -111,7 +106,6 @@ def draw_game(w):
             break
 
 def main():
-    initdesk()
     curses.wrapper(draw_game)
 
 if __name__ == '__main__':
