@@ -66,43 +66,53 @@ def initdesk():
     curses.cbreak()
     curses.noecho()
     curses.curs_set(0)
+    # 初始化颜色对
     curses.start_color()                    
-    curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)                                   
-    curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)                                     
+    curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
+    curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
+    curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_WHITE)
     global w
     w = curses.newwin(0,0)
     # 画出desk
-    for i in range(1, int(wei)-1):
+    for i in range(1, wei-1):
         w.addstr(0, i, '-')
-        w.addstr(int(hei)-1, i, '-')
+        w.addstr(hei-2, i, '-')
     w.addstr(0, 0, '↱')
-    w.addstr(0, int(wei)-1, '↴')
-    w.addstr(int(hei)-1, int(wei)-2, '↵')
-    w.addstr(int(hei)-1, 0, '↳')
-    for i in range(1, int(hei)-1):
+    w.addstr(0, wei-1, '↴')
+    w.addstr(hei-2, wei-1, '↵')
+    w.addstr(hei-2, 0, '↳')
+    for i in range(1, hei-2):
         w.addstr(i, 0, '|')
-        w.addstr(i, int(wei)-1, '|')
+        w.addstr(i, wei-1, '|')
     w.refresh()
-# def main():
     
-initdesk()
-while True:
-    # 清除前一次绘制的card
-    for i in range(1, int(wei)-1):
-        w.addstr(int(hei/2), i, ' ')
-    roundstart()
-    gamechecker()
-    # 绘制score
-    w.addstr(3, 2, 'Score:'+str(score))
-    # 绘制card
-    w.attron(curses.color_pair(2))
-    w.addstr(int(hei/2), int(wei/2), str(cards))
-    w.attroff(curses.color_pair(2))
-    #print('score=%s'%score)
-    key = w.getch()
-    # q键退出游戏
-    if key == ord('q'):
-        curses.endwin()
-        quit()
-    elif key != -1:
-        pass
+def draw_game(w):
+    while True:
+        # 清除前一次绘制的card
+        for i in range(1, int(wei)-1):
+            w.addstr(int(hei/2), i, ' ')
+        roundstart()
+        gamechecker()
+        # 绘制score
+        w.addstr(3, 2, 'Score:'+str(score))
+        # 绘制score bar
+        status_bar_str = "Press 'q' to exit | Score:%s | Card Game "%str(score)
+        w.attron(curses.color_pair(3))
+        w.addstr(hei-1, 1, status_bar_str)
+        w.attroff(curses.color_pair(3))
+        # 绘制card
+        w.attron(curses.color_pair(2))
+        w.addstr(int(hei/2), int((wei/2)-(len(str(cards))/2)-(len(str(cards))%2)), str(cards))
+        w.attroff(curses.color_pair(2))
+        #print('score=%s'%score)
+        # 下一个输入
+        key = w.getch() 
+        if key == ord('q'):
+            break
+
+def main():
+    initdesk()
+    curses.wrapper(draw_game)
+
+if __name__ == '__main__':
+    main()
