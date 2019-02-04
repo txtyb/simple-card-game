@@ -71,15 +71,15 @@ def draw_game(w):
     curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_WHITE)
     # 画出desk
     for i in range(1, wei-1):
-        w.addstr(0, i, '-')
-        w.addstr(hei-2, i, '-')
-    w.addstr(0, 0, '↱')
-    w.addstr(0, wei-1, '↴')
-    w.addstr(hei-2, wei-1, '↵')
-    w.addstr(hei-2, 0, '↳')
+        w.addstr(0, i, '━')
+        w.addstr(hei-2, i, '━')
+    w.addstr(0, 0, '┏')
+    w.addstr(0, wei-1, '┓')
+    w.addstr(hei-2, wei-1, '┛')
+    w.addstr(hei-2, 0, '┗')
     for i in range(1, hei-2):
-        w.addstr(i, 0, '|')
-        w.addstr(i, wei-1, '|')
+        w.addstr(i, 0, '┃')
+        w.addstr(i, wei-1, '┃')
     w.refresh()
     # 开始
     while True:
@@ -91,7 +91,7 @@ def draw_game(w):
         # 绘制score
         w.addstr(3, 2, 'Score:'+str(score))
         # 绘制score bar
-        status_bar_str = "Press 'q' to exit | Score: %s | Card Game "%str(score)
+        status_bar_str = "Press 'q' to exit | Score: %s | Card Game ⌬ "%str(score)
         w.attron(curses.color_pair(3))
         w.addstr(hei-1, 1, status_bar_str)
         w.attroff(curses.color_pair(3))
